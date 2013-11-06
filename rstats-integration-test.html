@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Recalcc.github.io by recalcc</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  
+  <script src="javascripts/prettymin/run_prettify.js"></script>
+  
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Recalcc.github.io</h1>
+        <p>dev notes</p>
+
+
+        <p class="view"><a href="https://github.com/recalcc">View My GitHub Profile</a></p>
+
+      </header>
+      <section>
+        <h3>
+        
+
+<a name="rint" class="anchor" href="#rint"><span class="octicon octicon-link"></span></a>
+Accessing your own R instance from ethercalc:</h3>
+
+
+<pre class="prettyprint lang-r" >
+library(rjson)
+library(httpuv)
+
+app2 <- function(env){
+    list(
+        status=200,
+        headers = list(
+            'Content-Type' = 'text/html',
+            'Access-Control-Allow-Origin'='*',
+            'Access-Control-Allow-Methods'='GET,POST,PUT',
+            'access-control-allow-headers'=
+            'accept, accept-charset, accept-encoding, accept-language, authorization, content-length, content-type, host, origin, proxy-connection, referer, user-agent, x-requested-with'
+        ),
+        body = paste(capture.output(cat(toJSON(eval(env=globalenv(),parse(text=sub("param=","",rawToChar(env$rook.input$read()))))))))
+    )
+}
+
+runServer("0.0.0.0", 8888, app= app2)
+</code>
+
+<p>You will need to install.packages httup and rjson first.</p>
+
+From your ethercalc sheet page ( possibly in your onOpen ):
+
+<pre  class="prettyprint lang-js">
+_CONFIG.RapServer="127.0.0.1"; // or whatever IP your instance is accessible from
+_CONFIG.RapPort=8888;
+</pre>
+
+That's it; from now on all REVAL() functions within your sheet will be computed in the scope of your own R instance as long as the calculation is done client-side.
+If you install your own server you can modify the above _CONFIG values in config.js, run build.sh and REVAL()s will be computed on your R instance server-side as well.
+
+
+<!---        
+<a name="why-do-you-hate-me-github-pages" class="anchor" href="#why-do-you-hate-me-github-pages"><span class="octicon octicon-link"></span></a>why do you hate me, GitHub Pages?</h3>
+
+<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+
+<pre><code>$ cd your_repo_root/repo_name
+$ git fetch origin
+$ git checkout gh-pages
+</code></pre>
+--->
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
