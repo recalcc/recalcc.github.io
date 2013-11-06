@@ -55,7 +55,16 @@ runServer("0.0.0.0", 8888, app= app2)
 </code></pre>
 
 <p>You will need to install.packages httup and rjson first.</p>
-        
+
+From your ethercalc sheet page ( possibly in your onOpen ):
+
+<pre><code>
+_CONFIG.RapServer="127.0.0.1"; // or whatever IP your instance is accessible from
+_CONFIG.RapPort=8888;
+</code></pre>
+
+That's it; from now on all REVAL() functions within your sheet will be computed in the scope of your own R instance as long as the calculation is done client-side.
+If you install your own server you can modify the above _CONFIG values in config.js, run build.sh and REVAL()s will be computed on your R instance server-side as well.
         
 <a name="why-do-you-hate-me-github-pages" class="anchor" href="#why-do-you-hate-me-github-pages"><span class="octicon octicon-link"></span></a>why do you hate me, GitHub Pages?</h3>
 
