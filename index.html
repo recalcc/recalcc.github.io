@@ -24,6 +24,40 @@
       </header>
       <section>
         <h3>
+        
+
+<a name="rint" class="anchor" href="#rint"><span class="octicon octicon-link"></span></a>
+Accessing your own R instance from ethercalc:</h3>
+
+
+
+<p>(testing prettify)</p>
+
+<pre><code>
+library(rjson)
+library(httpuv)
+
+app2 <- function(env){
+    list(
+        status=200,
+        headers = list(
+            'Content-Type' = 'text/html',
+        
+'Access-Control-Allow-Origin'='*',
+'Access-Control-Allow-Methods'='GET,POST,PUT',
+'access-control-allow-headers'='accept, accept-charset, accept-encoding, accept-language, authorization, content-length, content-type, host, origin, proxy-connection, referer, user-agent, x-requested-with'
+    
+        ),
+        body = paste(capture.output(cat(toJSON(eval(env=globalenv(),parse(text=sub("param=","",rawToChar(env$rook.input$read()))))))))
+    )
+}
+
+runServer("0.0.0.0", 8888, app= app2)
+</code></pre>
+
+<p>You will need to install.packages httup and rjson first.</p>
+        
+        
 <a name="why-do-you-hate-me-github-pages" class="anchor" href="#why-do-you-hate-me-github-pages"><span class="octicon octicon-link"></span></a>why do you hate me, GitHub Pages?</h3>
 
 <p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
